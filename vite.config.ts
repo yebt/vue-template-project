@@ -3,16 +3,54 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import AutoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    AutoImport({
+      // targets to transform
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/,
+        /\.vue\?vue/, // .vue
+        /\.vue\.[tj]sx?\?vue/, // .vue (vue-loader with experimentalInlineMatchResource enabled)
+        /\.md$/, // .md
+      ],
+
+      imports: [
+        // presets
+        'vue',
+        'vue-router',
+        // custom
+        // example type import
+        // {
+        //   from: 'vue-router',
+        //   imports: ['RouteLocationRaw'],
+        //   type: true,
+        // },
+      ],
+
+      dirs: [
+        './src/composables/**', // all nested modules
+        './src/stores/', // root elements
+      ],
+
+      dts: true,
+      vueTemplate: true,
+
+      viteOptimizeDeps: true,
+
+      eslintrc: {
+        enabled: true,
+      },
+    }),
     vue(),
     vueDevTools(),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })
