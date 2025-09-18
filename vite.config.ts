@@ -7,10 +7,12 @@ import AutoImport from 'unplugin-auto-import/vite'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import Components from 'unplugin-vue-components/vite'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     AutoImport({
       // targets to transform
       include: [
@@ -51,7 +53,9 @@ export default defineConfig({
     VueRouter({
       /* options */
     }),
-    Components({ /* options */ }),
+    Components({
+      /* options */
+    }),
     vue(),
     vueDevTools(),
   ],
